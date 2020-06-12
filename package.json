@@ -2,7 +2,7 @@
     "name": "hackintosh-pkg-cli",
     "version": "1.0.2",
     "description": "A small Node/Express Server to assist with the hackintosh-pkg-cli api requests",
-    "main": "server.js",
+    "main": "dist/server.js",
     "scripts": {
         "build": "tsc",
         "dev": "nodemon ./src/server.ts",
