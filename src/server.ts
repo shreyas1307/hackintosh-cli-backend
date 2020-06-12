@@ -6,9 +6,10 @@ import cors from 'cors';
 import GitHubAPIController from './controllers/GitHubAPIController/GitHubAPI.controller'
 
 import loggerMiddleware from './middleware/logger'
+import { PORT } from './utils/config';
 
 const app = new App({
-    port: process.env.PORT || 1307,
+    port: PORT || 1307,
     middleware: [
         BodyParser.json(),
         BodyParser.urlencoded({ extended: true }),
