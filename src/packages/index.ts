@@ -1,0 +1,16 @@
+export const packagesList: string[] = [
+    "acidanthera/OpenCorePkg",
+    "acidanthera/VirtualSMC",
+    "acidanthera/Lilu",
+    "acidanthera/WhateverGreen",
+    "acidanthera/AppleALC",
+    "acidanthera/IntelMausi",
+    "khronokernel/SmallTree-I211-AT-patch",
+    "Mieze/AtherosE2200Ethernet",
+    "Mieze/RTL8111_driver_for_OS_X",
+    // "Mieze/LucyRTL8125Ethernet",
+    "Sniki/OS-X-USB-Inject-All",
+    // "RehabMan/OS-X-USB-Inject-All",
+    "acidanthera/AirportBrcmFixup",
+    "acidanthera/BrcmPatchRAM",
+];
