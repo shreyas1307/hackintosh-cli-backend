@@ -5,20 +5,20 @@ import IControllerBase from '../../interfaces/IControllerBase.interface'
 import { packagesList } from '../../packages/index'
 import { GITHUB_TOKEN } from '../../utils/config'
 import { GithubPackageLatest, GithubPackageAllVersions } from '../../types'
-import { latest, allVersions } from '../../../dummyData'
+// import { latest, allVersions } from '../../../dummyData'
 
 class GitHubAPIController implements IControllerBase {
     public path = '/github'
     public router = express.Router()
-    // private _packagesLatest: GithubPackageLatest[] = []
-    // private _packagesAllVersions: GithubPackageAllVersions[] = []
-    private _packagesLatest: GithubPackageLatest[] = latest
-    private _packagesAllVersions: GithubPackageAllVersions[] = allVersions
+    private _packagesLatest: GithubPackageLatest[] = []
+    private _packagesAllVersions: GithubPackageAllVersions[] = []
+    // private _packagesLatest: GithubPackageLatest[] = latest
+    // private _packagesAllVersions: GithubPackageAllVersions[] = allVersions
 
 
     constructor() {
         this.initRoutes()
-        // this.getAllVersions()
+        this.getAllVersions()
     }
 
 
@@ -40,13 +40,13 @@ class GitHubAPIController implements IControllerBase {
                     }
                     this._packagesAllVersions.push({ package: pkg, version: res.data.map((x: any) => ({ release_id: x.id, release_version: x.tag_name })) })
                 })
-                .catch((err: AxiosError) => console.error("ERROR", err))
+                .catch((err: AxiosError) => console.log(err))
 
         })
     }
 
-    private GitHubAPIURL = (user: string, repo: string, latest: boolean, version?: string | number | undefined): { url: string, config: AxiosRequestConfig } => {
-        return { url: `https://api.github.com/repos/${user}/${repo}/releases${version ? `/${version}` : ""}${latest ? `/latest` : ""}`, config: { headers: { Authorization: `Token ${GITHUB_TOKEN as string}` } } }
+    private GitHubAPIURL = (user: string, repo: string, isLatest: boolean, version?: string | number | undefined): { url: string, config: AxiosRequestConfig } => {
+        return { url: `https://api.github.com/repos/${user}/${repo}/releases${version ? `/${version}` : ""}${isLatest ? `/latest` : ""}`, config: { headers: { Authorization: `Token ${GITHUB_TOKEN as string}` } } }
     }
 
     private dummyGet = (req: Request, res: Response) => {
@@ -68,27 +68,27 @@ class GitHubAPIController implements IControllerBase {
                 // Need to change code from and replace release_id with release_version due to an earlier mistake.
                 const specificVersion = this._packagesAllVersions.map(pkg => {
                     if (pkg.package === `${user}/${repo}`) {
-                        const foundVersion = pkg.version.find(pkgV => pkgV.release_id == version)
+                        const foundVersion = pkg.version.find(pkgV => pkgV.release_version == version)
                         return foundVersion
                     }
                     return null
                 }).filter(Boolean)
 
-                const { url, config } = this.GitHubAPIURL(user, repo, false, specificVersion[0]?.release_version)
+                const { url, config } = this.GitHubAPIURL(user, repo, false, specificVersion[0]?.release_id)
 
                 Axios.get(url, config)
-                    .then((apiData) => {
+                    .then((apiData: AxiosResponse) => {
                         res.status(200).send({ version: specificVersion, message: "SPECIFIC VERSION RELEASE", data: apiData.data })
                     })
-                    .catch(err => console.log("error here", err))
+                    .catch((err: AxiosError) => res.status(400).send({ error: err, message: "Error" }))
             } else {
                 const latestVersion = this._packagesLatest.find(pkg => pkg.package === `${user}/${repo}` && pkg.version)
                 const { url, config } = this.GitHubAPIURL(user, repo, true)
                 Axios.get(url, config)
-                    .then((apiData) => {
+                    .then((apiData: AxiosResponse) => {
                         res.status(200).send({ version: latestVersion, message: "LATEST RELEASE", data: apiData.data })
                     })
-                    .catch(err => console.log("error here", err))
+                    .catch((err: AxiosError) => res.status(400).send({ error: err, message: "Error" }))
             }
 
         }
