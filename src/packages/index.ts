@@ -13,4 +13,8 @@ export const packagesList: string[] = [
     // "RehabMan/OS-X-USB-Inject-All",
     "acidanthera/AirportBrcmFixup",
     "acidanthera/BrcmPatchRAM",
+    "acidanthera/NVMeFix",
+    "acidanthera/VoodooPS2",
+    "VoodooI2C/VoodooI2C",
+    "al3xtjames/NoTouchID",
 ];
