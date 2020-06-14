@@ -37,8 +37,8 @@ class GitHubAPIController implements IControllerBase {
 
             switch (endpoint) {
                 case 'discord':
-                    this._packagesLatest.push({ package: pkg.name, version: 0, release_id: 0, downloadLink: pkg.download })
-                    this._packagesAllVersions.push({ package: pkg.name, version: [{ release_id: 0, release_version: 0, downloadLink: pkg.download }] })
+                    this._packagesLatest.push({ package: pkg.name, version: 'latest', release_id: 0, downloadLink: pkg.download })
+                    this._packagesAllVersions.push({ package: pkg.name, version: [{ release_id: 0, release_version: 'latest', downloadLink: pkg.download }] })
                     return;
                 case 'github':
                     const { giturl, config } = this.GitHubAPIURL(user, repo, false)
