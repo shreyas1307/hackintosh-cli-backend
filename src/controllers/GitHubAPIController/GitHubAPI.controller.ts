@@ -27,6 +27,7 @@ class GitHubAPIController implements IControllerBase {
         this.router.get('/testAPI', this.dummyGet)
         this.router.get('/getUpdatedVersions', this.getUpdatedVersion)
         this.router.post('/dataByPackageName', this.dataByPackageName)
+        this.router.post('/availableVersions', this.availableVersions)
     }
 
     private getAllVersions() {
@@ -126,6 +127,29 @@ class GitHubAPIController implements IControllerBase {
             }
 
         }
+    }
+
+    private availableVersions = (req: Request, res: Response): void => {
+        const reqURL: string = req.body.reqURL?.toString();
+
+        if (reqURL === undefined) {
+            res.status(400).send({ status: 400, message: "Bad request, endpoint isn't valid" })
+        }
+
+        const token = `Token ${process.env.GITHUB_TOKEN as string}`
+        const [protocol, url] = reqURL.split('//');
+        const [endpoint, user, repo] = url.split('/')
+        const apiEndpoint: string = `${protocol}//api.${endpoint}/repos/${user}/${repo}/releases`;
+
+        Axios
+            .get(apiEndpoint, { headers: { 'Authorization': token } })
+            .then((response: AxiosResponse) => {
+                const packageData: GithubPackageAllVersions[] = []
+                packageData.push({ package: `${user}/${repo}`, version: response.data.map((x: any) => ({ release_id: x.id, release_version: x.tag_name })) })
+                res.status(200).send({ data: packageData, message: "Success" })
+            })
+            .catch((err: AxiosError) => res.status(400).send({ error: err, message: "Error" }))
+
     }
 }
 
