@@ -71,6 +71,11 @@ class GitHubAPIController implements IControllerBase {
                         })
                         .catch((err: AxiosError) => console.log(err))
 
+                case 'no-github-release':
+                    this._packagesLatest.push({ package: pkg.name, version: 'latest', release_id: 0, downloadLink: pkg.download })
+                    this._packagesAllVersions.push({ package: pkg.name, version: [{ release_id: 0, release_version: 'latest', downloadLink: pkg.download }] })
+                    return;
+
                 default:
                     return
             }
