@@ -8,7 +8,7 @@ export const packagesList: packagesListType[] = [
     { name: "khronokernel/SmallTree-I211-AT-patch", endpoint: "github" },
     { name: "Mieze/AtherosE2200Ethernet", endpoint: "github" },
     { name: "Mieze/RTL8111_driver_for_OS_X", endpoint: "github" },
-    // {name: "Mieze/LucyRTL8125Ethernet", endpoint: "github"},
+    { name: "Mieze/LucyRTL8125Ethernet", endpoint: "no-github-release", download: "https://api.github.com/repos/Mieze/LucyRTL8125Ethernet/zipball" },
     { name: "Sniki/OS-X-USB-Inject-All", endpoint: "github" },
     { name: "RehabMan/os-x-usb-inject-all", endpoint: "bitbucket" },
     { name: "acidanthera/AirportBrcmFixup", endpoint: "github" },
@@ -20,6 +20,9 @@ export const packagesList: packagesListType[] = [
     { name: "acidanthera/VoodooPS2", endpoint: "github" },
     { name: "VoodooI2C/VoodooI2C", endpoint: "github" },
     { name: "al3xtjames/NoTouchID", endpoint: "github" },
+    { name: "acidanthera/OcBinaryData", endpoint: "no-github-release", download: "https://api.github.com/repos/acidanthera/OcBinaryData/zipball" },
+    { name: "Pavo-IM/AGPMInjector", endpoint: "github" },
+    { name: "acidanthera/CPUFriend", endpoint: "github" },
 ];
 
 export type packagesListType = {
